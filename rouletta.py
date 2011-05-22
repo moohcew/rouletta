@@ -6,15 +6,15 @@ from math import log
 
 
 def usage():
-  print "einsatzkalkulator.py, version 0.1"
+  print "rouletta.py, version 0.1"
   print ""
-  print "usage: einsatzkalulator.py [--help | -h]"
-  print "                           [--credit <guthaben> | -c <guthaben> ]"
-  print "                           [--risk <risikobereitschaft | -r <risikobereitschaft> ]"
-  print "                           [--save <Restgeld> | -s <Restgeld> ]"
-  print "                           [--min <Mindesteinsatz> ]"
-  print "                           [--max <Maximaleinsatz> ]"
-  print "                           [--segment <kleinste Stueckelung der Waehrung> ]"
+  print "usage: rouletta.py [--help | -h]"
+  print "                   [--credit <guthaben> | -c <guthaben> ]"
+  print "                   [--risk <risikobereitschaft | -r <risikobereitschaft> ]"
+  print "                   [--save <Restgeld> | -s <Restgeld> ]"
+  print "                   [--min <Mindesteinsatz> ]"
+  print "                   [--max <Maximaleinsatz> ]"
+  print "                   [--segment <kleinste Stueckelung der Waehrung> ]"
 
 
 def abrunden(zahl, schritt):
