@@ -6,15 +6,17 @@ from math import log
 
 
 def usage():
-  print "rouletta.py, version 0.1"
+  print "name"
+  print "     fuck the roulette"
+  print "usage"
+  print "     rouletta.py [--help | -h] <commands>"
   print ""
-  print "usage: rouletta.py [--help | -h]"
-  print "                   [--credit <guthaben> | -c <guthaben> ]"
-  print "                   [--risk <risikobereitschaft | -r <risikobereitschaft> ]"
-  print "                   [--save <Restgeld> | -s <Restgeld> ]"
-  print "                   [--min <Mindesteinsatz> ]"
-  print "                   [--max <Maximaleinsatz> ]"
-  print "                   [--segment <kleinste Stueckelung der Waehrung> ]"
+  print "commands"
+  print "     -c, --credit <guthaben>"
+  print "     -r, --risk <risikobereitschaft>"
+  print "     --min <Mindesteinsatz>"
+  print "     --max <Maximaleinsatz>"
+  print "     --segment <kleinste Stueckelung der Waehrung>"
 
 
 def abrunden(zahl, schritt):
@@ -30,68 +32,39 @@ def main(argv):
   max = 0
   segment = 0
 
-  # Optionen und Argumente parsen
+  # parse commands, options and arguments
   try:
     opts, args = getopt.getopt(argv, "hc:r:s:", ["help", "credit=", "risk=", "save=", "min=", "max=", "segment="])
+
+    for opt, arg in opts:
+      if opt in ("-h", "--help"):
+        usage()
+        sys.exit()
+      elif opt in ("-c", "--credit"):
+        guthaben = float(arg)
+      elif opt in ("-r", "--risk"):
+        risikobereitschaft = int(arg)
+      elif opt in ("-s", "--save"):
+        guthabensicherheit = float(arg)
+      elif opt == "--min":
+        min = float(arg)
+      elif opt == "--max":
+        max = float(arg)
+      elif opt == "--segment":
+        segment = float(arg)
+  
+    # if required commands are not given, raise a getopterror
+    if guthaben == 0 or risikobereitschaft == 0 or min == 0 or max == 0 or segment == 0:
+      raise getopt.GetoptError("the following commands are required: credit, risk, min, max, segment")
+      sys.exit(2)
+  
+  # catch getopt errors
   except getopt.GetoptError as err:
-    print(err)
-    print ""
-    usage()
+    print "rouletta: " + str(err) + ". See './rouletta.py --help'"
     sys.exit(2)
-
-  for opt, arg in opts:
-    if opt in ("-h", "--help"):
-      usage()
-      sys.exit()
-    elif opt in ("-c", "--credit"):
-      guthaben = float(arg)
-    elif opt in ("-r", "--risk"):
-      risikobereitschaft = int(arg)
-    elif opt in ("-s", "--save"):
-      guthabensicherheit = float(arg)
-    elif opt == "--min":
-      min = float(arg)
-    elif opt == "--max":
-      max = float(arg)
-    elif opt == "--segment":
-      segment = float(arg)
-
-  # Wurde Guthaben nicht angegeben
-  if guthaben == 0:
-    print "Guthaben fehlt."
-    print ""
-    usage()
-    sys.exit(2)
-
-  # Wurde Risikobereitschaft nicht angegeben
-  if risikobereitschaft == 0:
-    print "Risikobereitschaft fehlt."
-    print ""
-    usage()
-    sys.exit(2)
-
-  # Wurde Mindesteinsatz nicht angegeben
-  if min == 0:
-    print "Mindesteinsatz fehlt."
-    print ""
-    usage()
-    sys.exit(2)
-
-  # Wurde Maximaleinsatz nicht angegeben
-  if max == 0:
-    print "Maximaleinsatz fehlt."
-    print ""
-    usage()
-    sys.exit(2)
-
-  # Wurde Segment nicht angegeben
-  if segment == 0:
-    print "Die kleinste Stueckelung der Waehrung (Segment) fehlt."
-    print ""
-    usage()
-    sys.exit(2)
-
-  # Programm laeuft, solange Guthaben > 0 ist
+  
+  
+  # program starts and runs unless credit > 0
   while guthaben > 0:
     # berechne Anzahl Stellen, auf die die Einsaetze gerundet werden sollen
     # damit mit der Stueckelung und den verfuegbaren Chips ein realistischer Einsatz moeglich ist
